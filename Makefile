@@ -6,12 +6,12 @@
 #    By: judrion <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/04 13:05:20 by judrion           #+#    #+#              #
-#    Updated: 2019/08/27 11:24:36 by judrion          ###   ########.fr        #
+#    Updated: 2019/08/27 14:28:44 by judrion          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fractol
-SRC = main mandlebrot
+SRC = main mandlebrot render
 SRCS = $(addprefix src/, $(addsuffix .c, $(SRC)))
 OBJ = $(SRCS:.c=.o)
 INCLUDE = -Llibft/ -Lminilibx/
@@ -25,7 +25,7 @@ all: $(NAME)
 $(NAME):
 	$(MAKE) -C libft/
 	$(MAKE) -C minilibx/
-	gcc $(CFLAG) -o $(NAME) $(INCLUDE) $(LIB) $(SRCS) $(FRAMEWORK) -D_REENTRANT
+	gcc $(DCFLAG) -o $(NAME) $(INCLUDE) $(LIB) $(SRCS) $(FRAMEWORK) -D_REENTRANT
 
 .PHONY: clean fclean re lclean
 
