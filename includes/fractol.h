@@ -6,7 +6,7 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 15:36:51 by judrion           #+#    #+#             */
-/*   Updated: 2019/08/28 14:11:35 by judrion          ###   ########.fr       */
+/*   Updated: 2019/08/28 22:49:08 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define WIDTH				1600
 # define HEIGHT				1200
 # define ITERATION			10
+# define PIXEL				3
 #include "libft.h"
 #include "mlx.h"
 #include "keycode.h"
@@ -31,24 +32,6 @@ typedef struct				s_img
 	int						size_line;
 }							t_img;
 
-typedef struct				s_mlx
-{
-	void					*ptr;
-	void					*win;
-	t_img					*img;
-	int						iteration;
-}							t_mlx;
-
-
-
-typedef struct				s_imaginary
-{
-	double					c_reel;
-	double					c_imaginary;
-	double					z_reel;
-	double					z_imaginary;
-}							t_imaginary;
-
 typedef struct				s_mps
 {
 	double					x1;
@@ -58,6 +41,25 @@ typedef struct				s_mps
 	double					zoom_x;
 	double					zoom_y;
 }							t_mps;
+
+typedef struct				s_mlx
+{
+	void					*ptr;
+	void					*win;
+	t_img					*img;
+	t_mps					plane;
+	int						iteration;
+	int						work;
+}							t_mlx;
+
+typedef struct				s_imaginary
+{
+	double					c_reel;
+	double					c_imaginary;
+	double					z_reel;
+	double					z_imaginary;
+}							t_imaginary;
+
 
 int							mandlebrot(int indice, int iteration, \
 										t_mps *plan);

@@ -6,26 +6,66 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 10:59:17 by judrion           #+#    #+#             */
-/*   Updated: 2019/08/28 14:18:58 by judrion          ###   ########.fr       */
+/*   Updated: 2019/08/28 22:48:46 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
+int						print_square(int i, t_mlx *mlx, int color)
+{
+	int						x;
+	int						y;
+
+	x = 0;
+	while (x < PIXEL)
+	{
+		y = 0;
+		while (y < PIXEL)
+		{
+			if (i + (y * WIDTH) + x >= WIDTH * HEIGHT)
+				return (-1);
+			mlx->img->array[i + (y * WIDTH) + x] = mlx_get_color_value(mlx->ptr, color);
+			y = y + 1;
+		}
+		x = x + 1;
+	}
+	return (x * y);
+}
+
 int							render(t_mlx *mlx)
 {
 	int						i;
 	int						j;
+	int						limit;
+	int						jump;
+	int						color;
 
 	i = 0;
-	while (i < HEIGHT * WIDTH)
+	limit = 0;
+	if (mlx->work == 0)
 	{
-		if ((j = mandlebrot(i, mlx->iteration, &plane)) == mlx->iteration)
-			mlx->img->array[i] = mlx_get_color_value(mlx->ptr, 0x00000000);
-		else
-			mlx->img->array[i] = mlx_get_color_value(mlx->ptr, 0x00aa2267 * j);
-		i = i + 1;
+		usleep(500);
+		return (1);
 	}
+	while (i < (HEIGHT * WIDTH))
+	{
+		if ((j = mandlebrot(i, mlx->iteration, &mlx->plane)) == mlx->iteration)
+			color = 0x00000000;
+		else
+			color = (0x00aa2267 * j);
+		jump = print_square(i, mlx, color);
+		if (jump == -1)
+			break;
+		if (i != limit && i % WIDTH == 0)
+		{
+			i = limit + (PIXEL * WIDTH);
+			limit = i;
+		}
+		else
+			i = i + PIXEL;
+	}
+	mlx->work = 0;
 	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img->ptr, 0, 0);
 	return (1);
 }

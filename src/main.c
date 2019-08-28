@@ -6,7 +6,7 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 10:55:07 by judrion           #+#    #+#             */
-/*   Updated: 2019/08/28 14:19:15 by judrion          ###   ########.fr       */
+/*   Updated: 2019/08/28 14:33:19 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ t_mlx						*init_mlx(void)
 	mlx = (t_mlx*)ft_memalloc(sizeof(t_mlx));
 	mlx->ptr = mlx_init();
 	mlx->win = mlx_new_window(mlx->ptr, WIDTH, HEIGHT, "fractol");
+	mlx->work = 1;
 	return (mlx);
 }
 
@@ -61,25 +62,25 @@ int				key_hook(int keycode, t_mlx *mlx)
 		mlx->iteration = mlx->iteration - 1;
 	else
 		printf("keycode : %d\n", keycode);
+	mlx->work = 1;
 	return (0);
 }
 
 int							main()
 {
 
-	t_mps					plane;
 	t_mlx					*mlx;
 
 	mlx = init_mlx();
 	create_image(mlx);
 	mlx->iteration = 10;
-	plane.x1 = -2.1;
-	plane.x2 = 0.6;
-	plane.y1 = -1.2;
-	plane.y2 = 1.2;
+	mlx->plane.x1 = -2.1;
+	mlx->plane.x2 = 0.6;
+	mlx->plane.y1 = -1.2;
+	mlx->plane.y2 = 1.2;
 
 	mlx_hook(mlx->win, KP, KPMASK, &key_hook, mlx);
-//	mlx_loop_hook(mlx->ptr, loop, mlx);
+	mlx_loop_hook(mlx->ptr, render, mlx);
 	mlx_loop(mlx->ptr);
 	return (0);
 }
