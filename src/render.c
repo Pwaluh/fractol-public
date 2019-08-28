@@ -6,19 +6,29 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 10:59:17 by judrion           #+#    #+#             */
-/*   Updated: 2019/08/27 14:33:04 by judrion          ###   ########.fr       */
+/*   Updated: 2019/08/28 14:18:58 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-/*
 int							render(t_mlx *mlx)
 {
-	printf("mlx : %p\n", mlx);
+	int						i;
+	int						j;
+
+	i = 0;
+	while (i < HEIGHT * WIDTH)
+	{
+		if ((j = mandlebrot(i, mlx->iteration, &plane)) == mlx->iteration)
+			mlx->img->array[i] = mlx_get_color_value(mlx->ptr, 0x00000000);
+		else
+			mlx->img->array[i] = mlx_get_color_value(mlx->ptr, 0x00aa2267 * j);
+		i = i + 1;
+	}
+	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img->ptr, 0, 0);
 	return (1);
 }
-*/
 
 void						create_image(t_mlx *mlx)
 {

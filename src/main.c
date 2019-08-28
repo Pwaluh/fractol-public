@@ -6,7 +6,7 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 10:55:07 by judrion           #+#    #+#             */
-/*   Updated: 2019/08/27 14:33:09 by judrion          ###   ########.fr       */
+/*   Updated: 2019/08/28 14:19:15 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,10 @@ int				key_hook(int keycode, t_mlx *mlx)
 		escape(mlx);
 		exit(0);
 	}
+	else if (keycode == NKPL_KEY)
+		mlx->iteration = mlx->iteration + 1;
+	else if (keycode == NKMN_KEY && mlx->iteration > 1)
+		mlx->iteration = mlx->iteration - 1;
 	else
 		printf("keycode : %d\n", keycode);
 	return (0);
@@ -62,26 +66,18 @@ int				key_hook(int keycode, t_mlx *mlx)
 
 int							main()
 {
-	int						i;
+
 	t_mps					plane;
 	t_mlx					*mlx;
 
 	mlx = init_mlx();
 	create_image(mlx);
+	mlx->iteration = 10;
 	plane.x1 = -2.1;
 	plane.x2 = 0.6;
 	plane.y1 = -1.2;
 	plane.y2 = 1.2;
-	i = 0;
-	while (i < HEIGHT * WIDTH)
-	{
-		if (mandlebrot(i, ITERATION, &plane) == ITERATION)
-			mlx->img->array[i] = mlx_get_color_value(mlx->ptr, 0x00000000);
-		else
-			mlx->img->array[i] = mlx_get_color_value(mlx->ptr, 0x00aa2267);
-		i = i + 1;
-	}
-	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img->ptr, 0, 0);
+
 	mlx_hook(mlx->win, KP, KPMASK, &key_hook, mlx);
 //	mlx_loop_hook(mlx->ptr, loop, mlx);
 	mlx_loop(mlx->ptr);

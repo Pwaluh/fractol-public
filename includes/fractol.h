@@ -6,15 +6,15 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 15:36:51 by judrion           #+#    #+#             */
-/*   Updated: 2019/08/27 14:33:05 by judrion          ###   ########.fr       */
+/*   Updated: 2019/08/28 14:11:35 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
-# define WIDTH				3000
-# define HEIGHT				1600
+# define WIDTH				1600
+# define HEIGHT				1200
 # define ITERATION			10
 #include "libft.h"
 #include "mlx.h"
@@ -36,6 +36,7 @@ typedef struct				s_mlx
 	void					*ptr;
 	void					*win;
 	t_img					*img;
+	int						iteration;
 }							t_mlx;
 
 
