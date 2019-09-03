@@ -6,7 +6,7 @@
 /*   By: jreynaer <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/17 15:17:23 by jreynaer          #+#    #+#             */
-/*   Updated: 2019/02/07 16:40:12 by hde-ghel         ###   ########.fr       */
+/*   Updated: 2019/08/31 14:07:04 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@
 # define BUTTON3MOTIONMASK (1L<<10)
 # define BUTTON4MOTIONMASK (1L<<11)
 # define BUTTON5MOTIONMASK (1L<<12)
+
 # define BUTTONMOTIONMASK (1L<<13)
+
 # define KEYMAPSTATEMASK (1L<<14)
 # define EXPOSUREMASK (1L<<15)
 # define VISIBILITYCHANGEMASK (1L<<16)
@@ -45,7 +47,9 @@
 # define KEYRELEASE 3
 # define BUTTONPRESS 4
 # define BUTTONRELEASE 5
+
 # define MOTIONNOTIFY 6
+
 # define ENTERNOTIFY 7
 # define LEAVENOTIFY 8
 # define FOCUSIN 9

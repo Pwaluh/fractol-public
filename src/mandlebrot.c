@@ -6,7 +6,7 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 10:55:12 by judrion           #+#    #+#             */
-/*   Updated: 2019/08/28 21:56:32 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/03 15:17:15 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,20 @@ static void					init_data(t_imaginary *data, t_mps *plan, int i)
 
 	x = i % WIDTH;
 	y = i / WIDTH;
-	data->c_reel = plan->x1 + factor(x, 0, WIDTH, plan->x2 - plan->x1);
-	data->c_imaginary = plan->y1 + factor(y, 0, HEIGHT, plan->y2 - plan->y1);
-	data->z_reel = 0;
-	data->z_imaginary = 0;
+	if (plan->f_type == JULIA)
+	{
+		data->c_reel = 0.285;
+		data->c_imaginary = 0.01;
+		data->z_reel = plan->x1 + factor(x, 0, WIDTH, plan->x2 - plan->x1);
+		data->z_imaginary = plan->y1 + factor(y, 0, HEIGHT, plan->y2 - plan->y1);
+	}
+	else if (plan->f_type == MANDLEBROT)
+	{
+		data->c_reel = plan->x1 + factor(x, 0, WIDTH, plan->x2 - plan->x1);
+		data->c_imaginary = plan->y1 + factor(y, 0, HEIGHT, plan->y2 - plan->y1);
+		data->z_reel = 0;
+		data->z_imaginary = 0;
+	}
 }
 
 int							mandlebrot(int indice, int iteration,

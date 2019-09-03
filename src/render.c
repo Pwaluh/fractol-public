@@ -6,7 +6,7 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 10:59:17 by judrion           #+#    #+#             */
-/*   Updated: 2019/08/28 22:48:46 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/03 15:11:19 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ int						print_square(int i, t_mlx *mlx, int color)
 	int						y;
 
 	x = 0;
-	while (x < PIXEL)
+	while (x < mlx->pixel)
 	{
 		y = 0;
-		while (y < PIXEL)
+		while (y < mlx->pixel)
 		{
 			if (i + (y * WIDTH) + x >= WIDTH * HEIGHT)
 				return (-1);
@@ -53,17 +53,18 @@ int							render(t_mlx *mlx)
 		if ((j = mandlebrot(i, mlx->iteration, &mlx->plane)) == mlx->iteration)
 			color = 0x00000000;
 		else
-			color = (0x00aa2267 * j);
+			color = j * 255 / mlx->iteration;
+			//color = (0x00aa2267 * j);
 		jump = print_square(i, mlx, color);
 		if (jump == -1)
 			break;
 		if (i != limit && i % WIDTH == 0)
 		{
-			i = limit + (PIXEL * WIDTH);
+			i = limit + (mlx->pixel * WIDTH);
 			limit = i;
 		}
 		else
-			i = i + PIXEL;
+			i = i + mlx->pixel;
 	}
 	mlx->work = 0;
 	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img->ptr, 0, 0);

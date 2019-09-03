@@ -6,22 +6,25 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 15:36:51 by judrion           #+#    #+#             */
-/*   Updated: 2019/08/28 22:49:08 by judrion          ###   ########.fr       */
+/*   Updated: 2019/08/31 15:27:33 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
-# define WIDTH				1600
-# define HEIGHT				1200
-# define ITERATION			10
-# define PIXEL				3
+# define WIDTH				2000
+# define HEIGHT				2000
+# define ITERATION			4
+# define MANDLEBROT			1
+# define JULIA				2
+
 #include "libft.h"
 #include "mlx.h"
 #include "keycode.h"
 #include <stdio.h>
 #include <pthread.h>
+#include <math.h>
 
 typedef struct				s_img
 {
@@ -38,8 +41,9 @@ typedef struct				s_mps
 	double					x2;
 	double					y1;
 	double					y2;
-	double					zoom_x;
-	double					zoom_y;
+	int						f_type;
+	double					z_reel;
+	double					z_imaginary;
 }							t_mps;
 
 typedef struct				s_mlx
@@ -50,6 +54,8 @@ typedef struct				s_mlx
 	t_mps					plane;
 	int						iteration;
 	int						work;
+	int						pixel;
+	int						lock;
 }							t_mlx;
 
 typedef struct				s_imaginary
@@ -59,6 +65,12 @@ typedef struct				s_imaginary
 	double					z_reel;
 	double					z_imaginary;
 }							t_imaginary;
+
+typedef struct				s_v2d
+{
+	double					x;
+	double					y;
+}							t_v2d;
 
 
 int							mandlebrot(int indice, int iteration, \
@@ -76,4 +88,9 @@ void						destroy_mlx(t_mlx *mlx);
 
 void						escape(t_mlx *mlx);
 int							key_hook(int keycode, t_mlx *mlx);
+int							mouse_hook_fct(int keycode, int x, int y, t_mlx *mlx);
+t_v2d						mouse_to_plan(int x, int y, t_mlx *mlx);
+double						interpolate(double start, double end, double interpolation);
+void						applyZoom(t_mlx *mlx, double x, double y, double zoomFactor);
+int							mouse_move(int x, int y, t_mlx *mlx);
 #endif
