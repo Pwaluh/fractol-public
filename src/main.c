@@ -6,7 +6,7 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 10:55:07 by judrion           #+#    #+#             */
-/*   Updated: 2019/09/03 15:21:26 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/05 17:31:28 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ int				key_hook(int keycode, t_mlx *mlx)
 	}
 	else if (keycode == NKPL_KEY)
 	{
-		mlx->iteration = mlx->iteration + 10;
+		mlx->iteration = mlx->iteration + 1;
 	}
-	else if (keycode == NKMN_KEY && mlx->iteration > 11)
-		mlx->iteration = mlx->iteration - 10;
+	else if (keycode == NKMN_KEY && mlx->iteration > 1)
+		mlx->iteration = mlx->iteration - 1;
 	else if (keycode == 49)
 	{
 		mlx->plane.x1 = mlx->plane.x1 * 0.9;
@@ -77,6 +77,8 @@ int				key_hook(int keycode, t_mlx *mlx)
 		mlx->plane.f_type = JULIA;
 	else if (keycode == 35)
 		mlx->pixel = mlx->pixel == 1 ? 10 : 1;
+	else if (keycode == 83)
+		mlx->color = mlx->color == 1 ? 0 : 1;
 	else
 		printf("keycode : %d\n", keycode);
 	mlx->work = 1;
@@ -97,6 +99,7 @@ int							main()
 	mlx->plane.y2 = 1.2;
 	mlx->pixel = 10;
 	mlx->plane.f_type = 1;
+	mlx->color = 1;
 
 	mlx_hook(mlx->win, KP, KPMASK, &key_hook, mlx);
 	mlx_hook(mlx->win, SCROLLUP_KEY, 0, &mouse_hook_fct, mlx);

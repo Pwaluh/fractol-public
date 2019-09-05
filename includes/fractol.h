@@ -6,18 +6,19 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 15:36:51 by judrion           #+#    #+#             */
-/*   Updated: 2019/08/31 15:27:33 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/05 15:42:05 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
-# define WIDTH				2000
-# define HEIGHT				2000
+# define WIDTH				2600
+# define HEIGHT				1400
 # define ITERATION			4
 # define MANDLEBROT			1
 # define JULIA				2
+# define MAX_THREADS		8
 
 #include "libft.h"
 #include "mlx.h"
@@ -25,6 +26,8 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <math.h>
+#include <errno.h>
+#include <string.h>
 
 typedef struct				s_img
 {
@@ -34,6 +37,12 @@ typedef struct				s_img
 	int						endian;
 	int						size_line;
 }							t_img;
+
+typedef struct				s_thread
+{
+	int						id;
+	pthread_t				reel_id;
+}							t_thread;
 
 typedef struct				s_mps
 {
@@ -56,6 +65,8 @@ typedef struct				s_mlx
 	int						work;
 	int						pixel;
 	int						lock;
+	int						color;
+	t_thread				*threads;
 }							t_mlx;
 
 typedef struct				s_imaginary
@@ -93,4 +104,10 @@ t_v2d						mouse_to_plan(int x, int y, t_mlx *mlx);
 double						interpolate(double start, double end, double interpolation);
 void						applyZoom(t_mlx *mlx, double x, double y, double zoomFactor);
 int							mouse_move(int x, int y, t_mlx *mlx);
+int							create_thread(t_mlx *mlx);
+void						fractal(void *mlx);
+void						wait_thread(t_mlx *mlx);
+int			set_color(t_mlx *mlx, int i);
+int						print_square(int i, t_mlx *mlx, int color);
+
 #endif

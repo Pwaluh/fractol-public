@@ -6,7 +6,7 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 10:59:17 by judrion           #+#    #+#             */
-/*   Updated: 2019/09/03 15:11:19 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/05 17:34:21 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int						print_square(int i, t_mlx *mlx, int color)
 	int						y;
 
 	x = 0;
+
 	while (x < mlx->pixel)
 	{
 		y = 0;
@@ -33,41 +34,39 @@ int						print_square(int i, t_mlx *mlx, int color)
 	return (x * y);
 }
 
+int			set_color(t_mlx *mlx, int i)
+{
+	int				color;
+	int				j;
+
+	if ((j = mandlebrot(i, mlx->iteration, &mlx->plane)) == mlx->iteration)
+		color = 0x00000000;
+	else
+	{
+		if (mlx->color == 0)
+			color = j * 255 / mlx->iteration;
+		else
+			color = (0x00aa2267 * j);
+	}
+	return (color);
+}
+
 int							render(t_mlx *mlx)
 {
-	int						i;
-	int						j;
-	int						limit;
-	int						jump;
-	int						color;
-
-	i = 0;
-	limit = 0;
+	//create_image(mlx);
 	if (mlx->work == 0)
 	{
 		usleep(500);
 		return (1);
 	}
-	while (i < (HEIGHT * WIDTH))
+	else
 	{
-		if ((j = mandlebrot(i, mlx->iteration, &mlx->plane)) == mlx->iteration)
-			color = 0x00000000;
-		else
-			color = j * 255 / mlx->iteration;
-			//color = (0x00aa2267 * j);
-		jump = print_square(i, mlx, color);
-		if (jump == -1)
-			break;
-		if (i != limit && i % WIDTH == 0)
-		{
-			i = limit + (mlx->pixel * WIDTH);
-			limit = i;
-		}
-		else
-			i = i + mlx->pixel;
+		create_thread(mlx);
+		wait_thread(mlx);
+		mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img->ptr, 0, 0);
 	}
 	mlx->work = 0;
-	mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img->ptr, 0, 0);
+	//delete_image(mlx);
 	return (1);
 }
 
@@ -89,9 +88,3 @@ void						delete_image(t_mlx *mlx)
 	//free(mlx->img->array);
 	free(mlx->img);
 }
-
-/*
-void						update_image(t_mlx *mlx)
-{
-}
-*/
