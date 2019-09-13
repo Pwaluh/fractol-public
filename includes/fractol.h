@@ -6,15 +6,17 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 15:36:51 by judrion           #+#    #+#             */
-/*   Updated: 2019/09/05 15:42:05 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/13 18:17:06 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FRACTOL_H
 # define FRACTOL_H
 
-# define WIDTH				2600
-# define HEIGHT				1400
+# define W_WIDTH			2600
+# define W_HEIGHT			1400
+# define WIDTH				900
+# define HEIGHT				800
 # define ITERATION			4
 # define MANDLEBROT			1
 # define JULIA				2
@@ -51,8 +53,12 @@ typedef struct				s_mps
 	double					y1;
 	double					y2;
 	int						f_type;
+	int						power;
 	double					z_reel;
 	double					z_imaginary;
+	pthread_mutex_t			mutex;
+	double					zoom_x;
+	double					zoom_y;
 }							t_mps;
 
 typedef struct				s_mlx
@@ -66,6 +72,8 @@ typedef struct				s_mlx
 	int						pixel;
 	int						lock;
 	int						color;
+	float					frequency;
+	int						amplitude;
 	t_thread				*threads;
 }							t_mlx;
 
@@ -100,7 +108,7 @@ void						destroy_mlx(t_mlx *mlx);
 void						escape(t_mlx *mlx);
 int							key_hook(int keycode, t_mlx *mlx);
 int							mouse_hook_fct(int keycode, int x, int y, t_mlx *mlx);
-t_v2d						mouse_to_plan(int x, int y, t_mlx *mlx);
+t_v2d						*mouse_to_plan(int x, int y, t_mlx *mlx);
 double						interpolate(double start, double end, double interpolation);
 void						applyZoom(t_mlx *mlx, double x, double y, double zoomFactor);
 int							mouse_move(int x, int y, t_mlx *mlx);
@@ -109,5 +117,8 @@ void						fractal(void *mlx);
 void						wait_thread(t_mlx *mlx);
 int			set_color(t_mlx *mlx, int i);
 int						print_square(int i, t_mlx *mlx, int color);
+void					update_data(int power, t_imaginary *data);
 
+unsigned int	rgbtohex(int r, int g, int b);
+int				color_mix(t_mlx *mlx, int i);
 #endif

@@ -6,7 +6,7 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 10:55:07 by judrion           #+#    #+#             */
-/*   Updated: 2019/09/05 17:31:28 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/13 18:16:23 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_mlx						*init_mlx(void)
 
 	mlx = (t_mlx*)ft_memalloc(sizeof(t_mlx));
 	mlx->ptr = mlx_init();
-	mlx->win = mlx_new_window(mlx->ptr, WIDTH, HEIGHT, "fractol");
+	mlx->win = mlx_new_window(mlx->ptr, W_WIDTH, W_HEIGHT, "fractol");
 	mlx->work = 1;
 	return (mlx);
 }
@@ -40,12 +40,17 @@ t_mlx						*init_mlx(void)
 void						destroy_mlx(t_mlx *mlx)
 {
 	mlx_destroy_window(mlx->ptr, mlx->win);
+	mlx_init(NULL);
 	free(mlx);
 }
 
 void		escape(t_mlx *mlx)
 {
 	delete_image(mlx);
+	mlx_hook(mlx->win, KP, KPMASK, NULL, NULL);
+	mlx_hook(mlx->win, SCROLLUP_KEY, 0, NULL, NULL);
+	mlx_hook(mlx->win, SCROLLDOWN_KEY, 0, NULL, NULL);
+	mlx_hook(mlx->win, MOTIONNOTIFY, BUTTONMOTIONMASK, NULL, NULL);
 	destroy_mlx(mlx);
 }
 
@@ -79,6 +84,8 @@ int				key_hook(int keycode, t_mlx *mlx)
 		mlx->pixel = mlx->pixel == 1 ? 10 : 1;
 	else if (keycode == 83)
 		mlx->color = mlx->color == 1 ? 0 : 1;
+	else if (keycode == 14)
+		mlx->plane.power = mlx->plane.power == 2 ? 3 : 2;
 	else
 		printf("keycode : %d\n", keycode);
 	mlx->work = 1;
@@ -92,14 +99,19 @@ int							main()
 
 	mlx = init_mlx();
 	create_image(mlx);
-	mlx->iteration = 10;
+	mlx->iteration = 2;
 	mlx->plane.x1 = -2.1;
 	mlx->plane.x2 = 0.6;
 	mlx->plane.y1 = -1.2;
 	mlx->plane.y2 = 1.2;
 	mlx->pixel = 10;
 	mlx->plane.f_type = 1;
+	mlx->plane.power = 2;
 	mlx->color = 1;
+	mlx->frequency = 0.1;
+	mlx->amplitude = 1;
+	mlx->plane.zoom_x = WIDTH / (mlx->plane.x2 - mlx->plane.x1);
+	mlx->plane.zoom_y = HEIGHT / (mlx->plane.y2 - mlx->plane.y1);
 
 	mlx_hook(mlx->win, KP, KPMASK, &key_hook, mlx);
 	mlx_hook(mlx->win, SCROLLUP_KEY, 0, &mouse_hook_fct, mlx);

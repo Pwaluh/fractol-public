@@ -6,7 +6,7 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 10:55:12 by judrion           #+#    #+#             */
-/*   Updated: 2019/09/05 13:35:14 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/13 17:01:43 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,38 @@ int							mandlebrot(int indice, int iteration,
 {
 	t_imaginary				data;
 	int						i;
-	double					tmp;
 
 	init_data(&data, plan, indice);
 	i = 0;
-	while (i < iteration && ((data.z_reel * data.z_reel) + (data.z_imaginary * data.z_imaginary)) < 4.0)
+	while (i < iteration && data.z_reel * data.z_reel \
+			+ data.z_imaginary * data.z_imaginary < 4.0)
 	{
-		tmp = data.z_reel;
-		data.z_reel = data.z_reel * data.z_reel - data.z_imaginary * data.z_imaginary + data.c_reel;
-		data.z_imaginary = 2.0 * data.z_imaginary * tmp + data.c_imaginary;
+		update_data(plan->power, &data);
 		i = i + 1;
 	}
 	return (i);
+}
+
+void					update_data(int power, t_imaginary *data)
+{
+	double					tmp;
+
+	tmp = data->z_reel;
+	if (power == 2)
+	{
+		data->z_reel = data->z_reel * data->z_reel \
+					- data->z_imaginary * data->z_imaginary \
+					+ data->c_reel;
+		data->z_imaginary = 2.0 * data->z_imaginary * tmp \
+						+ data->c_imaginary;
+	}
+	else
+	{
+		data->z_reel = (data->z_reel * data->z_reel * data->z_reel) \
+					- 3 * ((data->z_reel) * (data->z_imaginary * data->z_imaginary)) \
+					+ data->c_reel;
+		data->z_imaginary = -(data->z_imaginary * data->z_imaginary * data->z_imaginary) \
+						+ 3 * ((tmp * tmp) * data->z_imaginary) \
+						+ data->c_imaginary;
+	}
 }

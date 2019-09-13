@@ -6,7 +6,7 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 13:41:33 by judrion           #+#    #+#             */
-/*   Updated: 2019/09/05 17:30:34 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/13 18:28:18 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int					create_thread(t_mlx *mlx)
 		while (i < MAX_THREADS)
 		{
 			mlx->threads[i].id = i;
-			if (pthread_create(&mlx->threads[i].reel_id, NULL, (void*)fractal, mlx) == - 1)
+			if (pthread_create(&mlx->threads[i].reel_id, NULL, (void*)fractal, (void*)mlx) == - 1)
 				return (-1);
 			i = i + 1;
 		}
@@ -72,6 +72,7 @@ void						fractal(void *p_mlx)
 		else
 			i = i + mlx->pixel;
 	}
+	pthread_exit(NULL);
 }
 
 void						wait_thread(t_mlx *mlx)
@@ -84,5 +85,5 @@ void						wait_thread(t_mlx *mlx)
 		pthread_join(mlx->threads[i].reel_id, NULL);
 		i = i + 1;
 	}
-	ft_memdel((void**)&mlx->threads);
+	free(mlx->threads);
 }

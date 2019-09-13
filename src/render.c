@@ -6,7 +6,7 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 10:59:17 by judrion           #+#    #+#             */
-/*   Updated: 2019/09/05 17:34:21 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/13 18:26:18 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,21 @@ int						print_square(int i, t_mlx *mlx, int color)
 	int						y;
 
 	x = 0;
-
-	while (x < mlx->pixel)
-	{
-		y = 0;
-		while (y < mlx->pixel)
+	y = 0;
+	if (i >= 0)
+	 {
+		while (x < mlx->pixel)
 		{
-			if (i + (y * WIDTH) + x >= WIDTH * HEIGHT)
-				return (-1);
-			mlx->img->array[i + (y * WIDTH) + x] = mlx_get_color_value(mlx->ptr, color);
-			y = y + 1;
+			y = 0;
+			while (y < mlx->pixel)
+			{
+				if (i + (y * WIDTH) + x >= WIDTH * HEIGHT)
+					return (-1);
+				mlx->img->array[i + (y * WIDTH) + x] = mlx_get_color_value(mlx->ptr, color);
+				y = y + 1;
+			}
+			x = x + 1;
 		}
-		x = x + 1;
 	}
 	return (x * y);
 }
@@ -44,7 +47,8 @@ int			set_color(t_mlx *mlx, int i)
 	else
 	{
 		if (mlx->color == 0)
-			color = j * 255 / mlx->iteration;
+			color = color_mix(mlx, j);
+			//color = j * 255 / mlx->iteration;
 		else
 			color = (0x00aa2267 * j);
 	}
@@ -53,7 +57,6 @@ int			set_color(t_mlx *mlx, int i)
 
 int							render(t_mlx *mlx)
 {
-	//create_image(mlx);
 	if (mlx->work == 0)
 	{
 		usleep(500);
@@ -63,10 +66,12 @@ int							render(t_mlx *mlx)
 	{
 		create_thread(mlx);
 		wait_thread(mlx);
-		mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img->ptr, 0, 0);
+		mlx_clear_window(mlx->ptr, mlx->win);
+		mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img->ptr,\
+				(W_WIDTH / 2) - (WIDTH / 2),\
+				(W_HEIGHT / 2) - (HEIGHT / 2));
+		mlx->work = 0;
 	}
-	mlx->work = 0;
-	//delete_image(mlx);
 	return (1);
 }
 
@@ -85,6 +90,5 @@ void						create_image(t_mlx *mlx)
 void						delete_image(t_mlx *mlx)
 {
 	mlx_destroy_image(mlx->ptr, mlx->img->ptr);
-	//free(mlx->img->array);
 	free(mlx->img);
 }
