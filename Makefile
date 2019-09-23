@@ -6,12 +6,12 @@
 #    By: judrion <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/04 13:05:20 by judrion           #+#    #+#              #
-#    Updated: 2019/09/13 18:04:47 by judrion          ###   ########.fr        #
+#    Updated: 2019/09/13 21:03:03 by judrion          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fractol
-SRC = main mandlebrot render mouse_hook thread color
+SRC = main mandlebrot render mouse_hook thread color key_hook
 SRCS = $(addprefix src/, $(addsuffix .c, $(SRC)))
 OBJ = $(SRCS:.c=.o)
 INCLUDE = -Llibft/ -Lminilibx/
@@ -25,7 +25,7 @@ all: $(NAME)
 $(NAME):
 	$(MAKE) -C libft/
 	$(MAKE) -C minilibx/
-	gcc $(CFLAG) -o $(NAME) $(INCLUDE) $(LIB) $(SRCS) $(FRAMEWORK) -D_REENTRANT
+	$(CC) $(CFLAG) -o $(NAME) $(INCLUDE) $(LIB) $(SRCS) $(FRAMEWORK) -D_REENTRANT
 
 .PHONY: clean fclean re lclean
 

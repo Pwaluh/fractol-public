@@ -6,7 +6,7 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 10:55:07 by judrion           #+#    #+#             */
-/*   Updated: 2019/09/13 18:16:23 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/16 15:01:00 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ double						factor(double nb, double min, double max, \
 	return (nb);
 }
 
-t_mlx						*init_mlx(void)
+t_mlx						*init_mlx(char *type)
 {
 	t_mlx					*mlx;
 
@@ -34,6 +34,22 @@ t_mlx						*init_mlx(void)
 	mlx->ptr = mlx_init();
 	mlx->win = mlx_new_window(mlx->ptr, W_WIDTH, W_HEIGHT, "fractol");
 	mlx->work = 1;
+	mlx->iteration = 2;
+	mlx->plane.x1 = -2.1;
+	mlx->plane.x2 = 0.6;
+	mlx->plane.y1 = -1.2;
+	mlx->plane.y2 = 1.2;
+	mlx->pixel = 10;
+	if (ft_strcmp(type, "mandlebrot") == 0)
+		mlx->plane.f_type = 1;
+	else if (ft_strcmp(type, "julia") == 0)
+		mlx->plane.f_type = 1;
+	else
+		throw_error(USAGE);
+	mlx->plane.power = 2;
+	mlx->color = 1;
+	mlx->frequency = 0.1;
+	mlx->amplitude = 1;
 	return (mlx);
 }
 
@@ -44,7 +60,7 @@ void						destroy_mlx(t_mlx *mlx)
 	free(mlx);
 }
 
-void		escape(t_mlx *mlx)
+void						escape(t_mlx *mlx)
 {
 	delete_image(mlx);
 	mlx_hook(mlx->win, KP, KPMASK, NULL, NULL);
@@ -54,65 +70,21 @@ void		escape(t_mlx *mlx)
 	destroy_mlx(mlx);
 }
 
-int				key_hook(int keycode, t_mlx *mlx)
+void					throw_error(int errorcode)
 {
-	if (keycode == ESC_KEY)
-	{
-		escape(mlx);
-		exit(0);
-	}
-	else if (keycode == NKPL_KEY)
-	{
-		mlx->iteration = mlx->iteration + 1;
-	}
-	else if (keycode == NKMN_KEY && mlx->iteration > 1)
-		mlx->iteration = mlx->iteration - 1;
-	else if (keycode == 49)
-	{
-		mlx->plane.x1 = mlx->plane.x1 * 0.9;
-		mlx->plane.x2 = mlx->plane.x2 * 0.9;
-		mlx->plane.y1 = mlx->plane.y1 * 0.9;
-		mlx->plane.y2 = mlx->plane.y2 * 0.9;
-	}
-	else if (keycode == 37)
-		mlx->lock = mlx->lock == 1 ? 0 : 1;
-	else if (keycode == 18)
-		mlx->plane.f_type = MANDLEBROT;
-	else if (keycode == 19)
-		mlx->plane.f_type = JULIA;
-	else if (keycode == 35)
-		mlx->pixel = mlx->pixel == 1 ? 10 : 1;
-	else if (keycode == 83)
-		mlx->color = mlx->color == 1 ? 0 : 1;
-	else if (keycode == 14)
-		mlx->plane.power = mlx->plane.power == 2 ? 3 : 2;
-	else
-		printf("keycode : %d\n", keycode);
-	mlx->work = 1;
-	return (0);
+	exit(errorcode);
 }
 
-int							main()
+int							main(int argc, char **argv)
 {
-
 	t_mlx					*mlx;
 
-	mlx = init_mlx();
+	if (argc != 2)
+		throw_error(USAGE);
+	mlx = init_mlx(argv[1]);
 	create_image(mlx);
-	mlx->iteration = 2;
-	mlx->plane.x1 = -2.1;
-	mlx->plane.x2 = 0.6;
-	mlx->plane.y1 = -1.2;
-	mlx->plane.y2 = 1.2;
-	mlx->pixel = 10;
-	mlx->plane.f_type = 1;
-	mlx->plane.power = 2;
-	mlx->color = 1;
-	mlx->frequency = 0.1;
-	mlx->amplitude = 1;
 	mlx->plane.zoom_x = WIDTH / (mlx->plane.x2 - mlx->plane.x1);
 	mlx->plane.zoom_y = HEIGHT / (mlx->plane.y2 - mlx->plane.y1);
-
 	mlx_hook(mlx->win, KP, KPMASK, &key_hook, mlx);
 	mlx_hook(mlx->win, SCROLLUP_KEY, 0, &mouse_hook_fct, mlx);
 	mlx_hook(mlx->win, SCROLLDOWN_KEY, 0, &mouse_hook_fct, mlx);

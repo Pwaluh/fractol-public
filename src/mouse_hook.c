@@ -6,12 +6,11 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/29 17:14:50 by judrion           #+#    #+#             */
-/*   Updated: 2019/09/13 18:40:54 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/13 20:43:38 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
-
 
 int							mouse_move(int x, int y, t_mlx *mlx)
 {
@@ -32,20 +31,23 @@ int							mouse_move(int x, int y, t_mlx *mlx)
 	return (0);
 }
 
-t_v2d					*mouse_to_plan(int x, int y, t_mlx *mlx)
+t_v2d						*mouse_to_plan(int x, int y, t_mlx *mlx)
 {
 	t_v2d			*p;
 
 	p = (t_v2d*)ft_memalloc(sizeof(t_v2d));
 	if (p)
 	{
-		p->x = mlx->plane.x1 + factor(x, 0, WIDTH,  mlx->plane.x2 - mlx->plane.x1);
-		p->y = mlx->plane.y1 + factor(y, 0, HEIGHT, mlx->plane.y2 - mlx->plane.y1);
+		p->x = mlx->plane.x1 + factor(x, 0, WIDTH,  \
+									mlx->plane.x2 - mlx->plane.x1);
+		p->y = mlx->plane.y1 + factor(y, 0, HEIGHT, \
+									mlx->plane.y2 - mlx->plane.y1);
 	}
 	return (p);
 }
 
-int							mouse_hook_fct(int keycode, int x, int y, t_mlx *mlx)
+int							mouse_hook_fct(int keycode, int x, int y,\
+											t_mlx *mlx)
 {
 	t_v2d				*p;
 
@@ -53,25 +55,27 @@ int							mouse_hook_fct(int keycode, int x, int y, t_mlx *mlx)
 	{
 		p = mouse_to_plan(x, y, mlx);
 		if (keycode == 5)
-			applyZoom(mlx, p->x, p->y, 1.05);
+			apply_zoom(mlx, p->x, p->y, 1.05);
 		else if (keycode == 4)
-			applyZoom(mlx, p->x, p->y, 1 / 1.05);
+			apply_zoom(mlx, p->x, p->y, 1 / 1.05);
 		mlx->work = 1;
 		free(p);
 	}
 	return (0);
 }
 
-double interpolate(double start, double end, double interpolation)
+double						interpolate(double start, double end, \
+										double interpolation)
 {
-	return start + ((end - start) * interpolation);
+	return (start + ((end - start) * interpolation));
 }
 
-void applyZoom(t_mlx *mlx, double x, double y, double zoomFactor)
+void						apply_zoom(t_mlx *mlx, double x, double y,\
+										double zoom_factor)
 {
-	double interpolation;
+	double					interpolation;
 
-	interpolation = 1.0 / zoomFactor;
+	interpolation = 1.0 / zoom_factor;
 	mlx->plane.x1 = interpolate(x, mlx->plane.x1, interpolation);
 	mlx->plane.y1 = interpolate(y, mlx->plane.y1, interpolation);
 	mlx->plane.x2 = interpolate(x, mlx->plane.x2, interpolation);

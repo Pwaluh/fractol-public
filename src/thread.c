@@ -6,13 +6,13 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 13:41:33 by judrion           #+#    #+#             */
-/*   Updated: 2019/09/13 18:28:18 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/13 20:53:48 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int					create_thread(t_mlx *mlx)
+int							create_thread(t_mlx *mlx)
 {
 	int					i;
 
@@ -23,7 +23,8 @@ int					create_thread(t_mlx *mlx)
 		while (i < MAX_THREADS)
 		{
 			mlx->threads[i].id = i;
-			if (pthread_create(&mlx->threads[i].reel_id, NULL, (void*)fractal, (void*)mlx) == - 1)
+			if (pthread_create(&mlx->threads[i].reel_id, NULL,\
+								(void*)fractal, (void*)mlx) == -1)
 				return (-1);
 			i = i + 1;
 		}
@@ -63,7 +64,7 @@ void						fractal(void *p_mlx)
 	{
 		jump = print_square(indice + i, mlx, set_color(mlx, indice + i));
 		if (jump == -1)
-			break;
+			break ;
 		if (i != limit && i % WIDTH == 0)
 		{
 			i = limit + (mlx->pixel * WIDTH);
