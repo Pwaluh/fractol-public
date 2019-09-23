@@ -6,7 +6,7 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/26 15:36:51 by judrion           #+#    #+#             */
-/*   Updated: 2019/09/16 15:01:11 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/23 22:47:04 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
 # define ITERATION			4
 # define MANDLEBROT			1
 # define JULIA				2
+# define MULTIBROT			3
 # define MAX_THREADS		8
-# define USAGE				1
 # include "libft.h"
 # include "mlx.h"
 # include "keycode.h"
@@ -29,6 +29,15 @@
 # include <math.h>
 # include <errno.h>
 # include <string.h>
+
+typedef enum				e_error
+{
+	USAGE,
+	THREADS_ALLOC_FAILED,
+	THREAD_ALLOCATION_FAILED,
+	NEW_IMAGE_FAILED
+
+}							t_error;
 
 typedef struct				s_img
 {
@@ -110,13 +119,13 @@ double						interpolate(double start, double end,\
 void						apply_zoom(t_mlx *mlx, double x, double y, \
 										double zoom_factor);
 int							mouse_move(int x, int y, t_mlx *mlx);
-int							create_thread(t_mlx *mlx);
+void						create_thread(t_mlx *mlx);
 void						fractal(void *mlx);
-void						wait_thread(t_mlx *mlx);
+void						wait_thread(t_mlx *mlx, int i);
 int							set_color(t_mlx *mlx, int i);
 int							print_square(int i, t_mlx *mlx, int color);
 void						update_data(int power, t_imaginary *data);
 unsigned int				rgbtohex(int r, int g, int b);
 int							color_mix(t_mlx *mlx, int i);
-void						throw_error(int errorcode);
+void						throw_error(t_mlx *mlx, int errorcode);
 #endif

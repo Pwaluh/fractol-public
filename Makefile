@@ -6,12 +6,12 @@
 #    By: judrion <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/02/04 13:05:20 by judrion           #+#    #+#              #
-#    Updated: 2019/09/13 21:03:03 by judrion          ###   ########.fr        #
+#    Updated: 2019/09/23 22:22:12 by judrion          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fractol
-SRC = main mandlebrot render mouse_hook thread color key_hook
+SRC = main mandlebrot render mouse_hook thread color key_hook error
 SRCS = $(addprefix src/, $(addsuffix .c, $(SRC)))
 OBJ = $(SRCS:.c=.o)
 INCLUDE = -Llibft/ -Lminilibx/

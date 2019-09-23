@@ -6,7 +6,7 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 10:55:07 by judrion           #+#    #+#             */
-/*   Updated: 2019/09/16 15:01:00 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/23 23:05:27 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,14 @@ t_mlx						*init_mlx(char *type)
 	mlx->plane.y1 = -1.2;
 	mlx->plane.y2 = 1.2;
 	mlx->pixel = 10;
-	if (ft_strcmp(type, "mandlebrot") == 0)
-		mlx->plane.f_type = 1;
-	else if (ft_strcmp(type, "julia") == 0)
-		mlx->plane.f_type = 1;
-	else
-		throw_error(USAGE);
 	mlx->plane.power = 2;
+	mlx->plane.f_type = MANDLEBROT;
+	if (ft_strcmp(type, "julia") == 0)
+		mlx->plane.f_type = JULIA;
+	else if (ft_strcmp(type, "multibrot") == 0)
+		mlx->plane.power = 3;
+	else if (ft_strcmp(type, "mandlebrot") != 0)
+		throw_error(mlx, USAGE);
 	mlx->color = 1;
 	mlx->frequency = 0.1;
 	mlx->amplitude = 1;
@@ -55,32 +56,19 @@ t_mlx						*init_mlx(char *type)
 
 void						destroy_mlx(t_mlx *mlx)
 {
+	mlx_destroy_image(mlx->ptr, mlx->img);
 	mlx_destroy_window(mlx->ptr, mlx->win);
 	mlx_init(NULL);
 	free(mlx);
-}
-
-void						escape(t_mlx *mlx)
-{
-	delete_image(mlx);
-	mlx_hook(mlx->win, KP, KPMASK, NULL, NULL);
-	mlx_hook(mlx->win, SCROLLUP_KEY, 0, NULL, NULL);
-	mlx_hook(mlx->win, SCROLLDOWN_KEY, 0, NULL, NULL);
-	mlx_hook(mlx->win, MOTIONNOTIFY, BUTTONMOTIONMASK, NULL, NULL);
-	destroy_mlx(mlx);
-}
-
-void					throw_error(int errorcode)
-{
-	exit(errorcode);
 }
 
 int							main(int argc, char **argv)
 {
 	t_mlx					*mlx;
 
+	mlx = NULL;
 	if (argc != 2)
-		throw_error(USAGE);
+		throw_error(mlx, USAGE);
 	mlx = init_mlx(argv[1]);
 	create_image(mlx);
 	mlx->plane.zoom_x = WIDTH / (mlx->plane.x2 - mlx->plane.x1);

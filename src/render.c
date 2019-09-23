@@ -6,7 +6,7 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/27 10:59:17 by judrion           #+#    #+#             */
-/*   Updated: 2019/09/13 20:28:00 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/23 22:56:35 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int						set_color(t_mlx *mlx, int i)
 	{
 		if (mlx->color == 0)
 			color = color_mix(mlx, j);
-		else if (mlx->color == 1)
+		else if (mlx->color == 2)
 			color = j * 255 / mlx->iteration;
 		else
 			color = (0x00aa2267 * j);
@@ -67,7 +67,7 @@ int						render(t_mlx *mlx)
 	else
 	{
 		create_thread(mlx);
-		wait_thread(mlx);
+		wait_thread(mlx, MAX_THREADS);
 		mlx_clear_window(mlx->ptr, mlx->win);
 		mlx_put_image_to_window(mlx->ptr, mlx->win, mlx->img->ptr,\
 				(W_WIDTH / 2) - (WIDTH / 2),\
@@ -80,8 +80,8 @@ int						render(t_mlx *mlx)
 void					create_image(t_mlx *mlx)
 {
 	mlx->img = (t_img*)ft_memalloc(sizeof(t_img));
-//	if (mlx->img == NULL)
-//		throw_error(mlx);
+	if (mlx->img == NULL)
+		throw_error(mlx, NEW_IMAGE_FAILED);
 	mlx->img->ptr = mlx_new_image(mlx->ptr, WIDTH, HEIGHT);
 	mlx->img->array = (int*)mlx_get_data_addr(mlx->img->ptr, \
 												&mlx->img->bpp,\

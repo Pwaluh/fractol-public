@@ -6,32 +6,31 @@
 /*   By: judrion <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 13:41:33 by judrion           #+#    #+#             */
-/*   Updated: 2019/09/13 20:53:48 by judrion          ###   ########.fr       */
+/*   Updated: 2019/09/23 22:21:53 by judrion          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int							create_thread(t_mlx *mlx)
+void						create_thread(t_mlx *mlx)
 {
 	int					i;
 
 	i = 0;
 	mlx->threads = (t_thread*)ft_memalloc(sizeof(t_thread) * MAX_THREADS);
-	if (mlx->threads)
+	if (mlx->threads == NULL)
+		throw_error(mlx, THREADS_ALLOC_FAILED);
+	while (i < MAX_THREADS)
 	{
-		while (i < MAX_THREADS)
+		mlx->threads[i].id = i;
+		if (pthread_create(&mlx->threads[i].reel_id, NULL,\
+							(void*)fractal, (void*)mlx) == -1)
 		{
-			mlx->threads[i].id = i;
-			if (pthread_create(&mlx->threads[i].reel_id, NULL,\
-								(void*)fractal, (void*)mlx) == -1)
-				return (-1);
-			i = i + 1;
+			wait_thread(mlx, i);
+			throw_error(mlx, THREAD_ALLOCATION_FAILED);
 		}
+		i = i + 1;
 	}
-	else
-		return (-2);
-	return (1);
 }
 
 static int					get_indice(t_mlx *mlx)
@@ -76,12 +75,12 @@ void						fractal(void *p_mlx)
 	pthread_exit(NULL);
 }
 
-void						wait_thread(t_mlx *mlx)
+void						wait_thread(t_mlx *mlx, int nb_threads)
 {
 	int						i;
 
 	i = 0;
-	while (i < MAX_THREADS)
+	while (i < nb_threads)
 	{
 		pthread_join(mlx->threads[i].reel_id, NULL);
 		i = i + 1;
