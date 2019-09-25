@@ -16,6 +16,7 @@ int							mouse_move(int x, int y, t_mlx *mlx)
 {
 	t_v2d					*p;
 
+	printf("mlx->work : %d\n", mlx->work);
 	if (mlx->plane.f_type == MANDLEBROT)
 		return (1);
 	if (mlx->lock != 1 && (x > 0 && x < W_WIDTH) && (y > 0 && y < W_HEIGHT))
@@ -36,6 +37,8 @@ t_v2d						*mouse_to_plan(int x, int y, t_mlx *mlx)
 	t_v2d			*p;
 
 	p = (t_v2d*)ft_memalloc(sizeof(t_v2d));
+	if (p == NULL)
+		throw_error(mlx, VECTOR2D_ALLOC_FAILED);
 	if (p)
 	{
 		p->x = mlx->plane.x1 + factor(x, 0, WIDTH,  \

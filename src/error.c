@@ -19,6 +19,16 @@ void						throw_error(t_mlx *mlx, int error_code)
 		ft_putendl("./fractol [mandlebrot/multibrot/julia]");
 		exit(error_code);
 	}
+	else if (error_code == MLX_ALLOCATION_FAILED)
+	{
+		ft_putendl("Can't allocate memory for mlx struct");
+	}
+	else if (error_code == VECTOR2D_ALLOC_FAILED)
+	{
+		ft_putendl("Can't allocate memory for mouse coord");
+		if (mlx->threads != NULL)
+			wait_thread(mlx, MAX_THREADS);
+	}
 	else if (error_code == NEW_IMAGE_FAILED)
 	{
 		ft_putendl("Can't allocate memory for new image");

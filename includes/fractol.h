@@ -35,7 +35,9 @@ typedef enum				e_error
 	USAGE,
 	THREADS_ALLOC_FAILED,
 	THREAD_ALLOCATION_FAILED,
-	NEW_IMAGE_FAILED
+	NEW_IMAGE_FAILED,
+	VECTOR2D_ALLOC_FAILED,
+	MLX_ALLOCATION_FAILED
 
 }							t_error;
 
@@ -83,6 +85,7 @@ typedef struct				s_mlx
 	float					frequency;
 	int						amplitude;
 	t_thread				*threads;
+	int						max_per_thread;
 }							t_mlx;
 
 typedef struct				s_imaginary
@@ -120,7 +123,7 @@ void						apply_zoom(t_mlx *mlx, double x, double y, \
 										double zoom_factor);
 int							mouse_move(int x, int y, t_mlx *mlx);
 void						create_thread(t_mlx *mlx);
-void						fractal(void *mlx);
+void						fractal(t_mlx *mlx);
 void						wait_thread(t_mlx *mlx, int i);
 int							set_color(t_mlx *mlx, int i);
 int							print_square(int i, t_mlx *mlx, int color);

@@ -14,6 +14,7 @@
 
 void				escape(t_mlx *mlx)
 {
+	mlx_loop_hook(mlx->ptr, NULL, NULL);
 	mlx_hook(mlx->win, KP, KPMASK, NULL, NULL);
 	mlx_hook(mlx->win, SCROLLUP_KEY, 0, NULL, NULL);
 	mlx_hook(mlx->win, SCROLLDOWN_KEY, 0, NULL, NULL);

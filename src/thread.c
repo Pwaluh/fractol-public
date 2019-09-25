@@ -24,7 +24,7 @@ void						create_thread(t_mlx *mlx)
 	{
 		mlx->threads[i].id = i;
 		if (pthread_create(&mlx->threads[i].reel_id, NULL,\
-							(void*)fractal, (void*)mlx) == -1)
+							(void*)fractal, mlx) == -1)
 		{
 			wait_thread(mlx, i);
 			throw_error(mlx, THREAD_ALLOCATION_FAILED);
@@ -47,19 +47,17 @@ static int					get_indice(t_mlx *mlx)
 	return (-1);
 }
 
-void						fractal(void *p_mlx)
+void						fractal(t_mlx *mlx)
 {
 	int						i;
 	int						limit;
 	int						jump;
 	int						indice;
-	t_mlx					*mlx;
 
-	mlx = (t_mlx*)p_mlx;
 	i = 0;
 	limit = 0;
-	indice = get_indice(mlx) * ((WIDTH * HEIGHT) / MAX_THREADS);
-	while (i < (HEIGHT * WIDTH) / MAX_THREADS)
+	indice = get_indice(mlx) * mlx->max_per_thread;
+	while (i < mlx->max_per_thread)
 	{
 		jump = print_square(indice + i, mlx, set_color(mlx, indice + i));
 		if (jump == -1)
@@ -86,4 +84,5 @@ void						wait_thread(t_mlx *mlx, int nb_threads)
 		i = i + 1;
 	}
 	free(mlx->threads);
+	mlx->threads = NULL;
 }

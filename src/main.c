@@ -31,6 +31,8 @@ t_mlx						*init_mlx(char *type)
 	t_mlx					*mlx;
 
 	mlx = (t_mlx*)ft_memalloc(sizeof(t_mlx));
+	if (mlx == NULL)
+		throw_error(NULL, MLX_ALLOCATION_FAILED);
 	mlx->ptr = mlx_init();
 	mlx->win = mlx_new_window(mlx->ptr, W_WIDTH, W_HEIGHT, "fractol");
 	mlx->work = 1;
@@ -70,6 +72,7 @@ int							main(int argc, char **argv)
 	if (argc != 2)
 		throw_error(mlx, USAGE);
 	mlx = init_mlx(argv[1]);
+	mlx->max_per_thread = (HEIGHT * WIDTH) / MAX_THREADS;
 	create_image(mlx);
 	mlx->plane.zoom_x = WIDTH / (mlx->plane.x2 - mlx->plane.x1);
 	mlx->plane.zoom_y = HEIGHT / (mlx->plane.y2 - mlx->plane.y1);
