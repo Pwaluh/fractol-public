@@ -24,11 +24,9 @@
 # include "libft.h"
 # include "mlx.h"
 # include "keycode.h"
-# include <stdio.h>
 # include <pthread.h>
 # include <math.h>
 # include <errno.h>
-# include <string.h>
 
 typedef enum				e_error
 {

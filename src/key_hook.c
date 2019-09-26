@@ -40,8 +40,6 @@ static int			key_hook2(int keycode, t_mlx *mlx)
 		mlx->frequency = mlx->frequency * 1.1;
 	else if (keycode == 27)
 		mlx->frequency = mlx->frequency * 0.9;
-	else
-		printf("keycode : %d\n", keycode);
 	return (0);
 }
 
