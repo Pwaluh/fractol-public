@@ -16,7 +16,6 @@ int							mouse_move(int x, int y, t_mlx *mlx)
 {
 	t_v2d					*p;
 
-	printf("mlx->work : %d\n", mlx->work);
 	if (mlx->plane.f_type == MANDLEBROT)
 		return (1);
 	if (mlx->lock != 1 && (x > 0 && x < W_WIDTH) && (y > 0 && y < W_HEIGHT))
