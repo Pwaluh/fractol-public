@@ -33,7 +33,7 @@ int							mouse_move(int x, int y, t_mlx *mlx)
 
 t_v2d						*mouse_to_plan(int x, int y, t_mlx *mlx)
 {
-	t_v2d			*p;
+	t_v2d					*p;
 
 	p = (t_v2d*)ft_memalloc(sizeof(t_v2d));
 	if (p == NULL)
@@ -51,7 +51,7 @@ t_v2d						*mouse_to_plan(int x, int y, t_mlx *mlx)
 int							mouse_hook_fct(int keycode, int x, int y,\
 											t_mlx *mlx)
 {
-	t_v2d				*p;
+	t_v2d					*p;
 
 	if (y > 0)
 	{

@@ -26,6 +26,16 @@ double						factor(double nb, double min, double max, \
 	return (nb);
 }
 
+void						init_plan(t_mlx *mlx)
+{
+	mlx->plane.x1 = -2.1;
+	mlx->plane.x2 = 0.6;
+	mlx->plane.y1 = -1.2;
+	mlx->plane.y2 = 1.2;
+	mlx->plane.power = 2;
+	mlx->plane.f_type = MANDLEBROT;
+}
+
 t_mlx						*init_mlx(char *type)
 {
 	t_mlx					*mlx;
@@ -37,13 +47,7 @@ t_mlx						*init_mlx(char *type)
 	mlx->win = mlx_new_window(mlx->ptr, W_WIDTH, W_HEIGHT, "fractol");
 	mlx->work = 1;
 	mlx->iteration = 2;
-	mlx->plane.x1 = -2.1;
-	mlx->plane.x2 = 0.6;
-	mlx->plane.y1 = -1.2;
-	mlx->plane.y2 = 1.2;
 	mlx->pixel = 10;
-	mlx->plane.power = 2;
-	mlx->plane.f_type = MANDLEBROT;
 	if (ft_strcmp(type, "julia") == 0)
 		mlx->plane.f_type = JULIA;
 	else if (ft_strcmp(type, "multibrot") == 0)
