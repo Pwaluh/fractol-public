@@ -44,10 +44,15 @@ t_mlx						*init_mlx(char *type)
 	if (mlx == NULL)
 		throw_error(NULL, MLX_ALLOCATION_FAILED);
 	mlx->ptr = mlx_init();
+	if (mlx->ptr == NULL)
+		throw_error(mlx, MLX_INIT_FAILED);
 	mlx->win = mlx_new_window(mlx->ptr, W_WIDTH, W_HEIGHT, "fractol");
+	if (mlx->win == WIN_INIT_FAILED)
+		throw_error(mlx, WIN_INIT_FAILED);
 	mlx->work = 1;
 	mlx->iteration = 2;
 	mlx->pixel = 10;
+	init_plan(mlx);
 	if (ft_strcmp(type, "julia") == 0)
 		mlx->plane.f_type = JULIA;
 	else if (ft_strcmp(type, "multibrot") == 0)
