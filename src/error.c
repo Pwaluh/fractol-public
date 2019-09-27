@@ -35,7 +35,7 @@ void						throw_error(t_mlx *mlx, int error_code)
 	exit(error_code);
 }
 
-void					throw_error2(t_mlx *mlx, int error_code)
+void						throw_error2(t_mlx *mlx, int error_code)
 {
 	if (error_code == MLX_INIT_FAILED)
 	{

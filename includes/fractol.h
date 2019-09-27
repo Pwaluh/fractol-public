@@ -130,4 +130,5 @@ void						update_data(int power, t_imaginary *data);
 unsigned int				rgbtohex(int r, int g, int b);
 int							color_mix(t_mlx *mlx, int i);
 void						throw_error(t_mlx *mlx, int errorcode);
+void						throw_error2(t_mlx *mlx, int error_code);
 #endif

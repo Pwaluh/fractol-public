@@ -47,7 +47,7 @@ t_mlx						*init_mlx(char *type)
 	if (mlx->ptr == NULL)
 		throw_error(mlx, MLX_INIT_FAILED);
 	mlx->win = mlx_new_window(mlx->ptr, W_WIDTH, W_HEIGHT, "fractol");
-	if (mlx->win == WIN_INIT_FAILED)
+	if (mlx->win == NULL)
 		throw_error(mlx, WIN_INIT_FAILED);
 	mlx->work = 1;
 	mlx->iteration = 2;
